@@ -15,12 +15,12 @@ For example, one can approximate a 1-d osciallting function.
 Here we plot the initialization of a network for approximating a 1-d function using
 our polynomial initialization and Xavier inititialization.
 
-![initialized nets](figs/cos_1d_deep_net_both_init_3.png)
+![initialized nets](fig/cos_1d_deep_net_both_init_3.png)
 
 After training these networks have the following behavior. The blue points 
 are the sample values of the target function used for training the network.
 
-![trained nets](figs/cos_1d_deep_net_both_trained_net_3.png)
+![trained nets](fig/cos_1d_deep_net_both_trained_net_3.png)
 
 Clearly, the polynomial initialized network was better able to learn the behavior 
 of the target function.
