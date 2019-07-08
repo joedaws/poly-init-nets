@@ -25,7 +25,7 @@ y = net(x)
 
 # sample a function of interest 
 xx = points.numpy()
-ly = np.cos(4*np.pi*(xx))
+ly = xx**3
 
 # create tensor target from data
 target = torch.tensor(ly).type(y.type())
@@ -36,6 +36,7 @@ pN = 1001
 px = torch.linspace(-1,1,pN)
 px = px.reshape(pN,1)
 p_rand_init_y = unnet(px)
+ply = px**3
 ply = np.cos(4*np.pi*(px.numpy()))
 
 # initialize network with polynomial parameters
@@ -90,7 +91,7 @@ for epoch in range(eN,eN+eN2):
 
 p_trained_y = net(px)
 # save learned parameters of the network
-save_str = './data/cos_1d_deep_net.pt'
+save_str = './data/x3_1d_deep_net.pt'
 torch.save(net.state_dict(),save_str)
 
 ############
@@ -142,7 +143,7 @@ for epoch in range(eN,eN+eN2):
 p_unnet_trained_y = unnet(px)
 
 # save learned parameters of the network
-save_str = './data/cos_1d_deep_unnet.pt'
+save_str = './data/x3_1d_deep_unnet.pt'
 torch.save(unnet.state_dict(),save_str)
 
 ##########
@@ -156,7 +157,7 @@ plt.plot(unlosses,label='Xavier Initialized')
 plt.legend()
 plt.title('Training Losses')
 plt.xlabel('Epoch Number')
-plt.savefig('./fig/cos_1d_deep_net_both_training_losses.png')
+plt.savefig('./fig/x3_1d_deep_net_both_training_losses.png')
 
 # plot randomly initialized network
 fig0 = plt.figure(1)
@@ -166,7 +167,7 @@ ax0.plot(px.numpy(),p_rand_init_y.detach().numpy(),label='Xavier Initialized')
 ax0.plot(px.numpy(),ply,label='Target')
 ax0.set_title('Initialized Networks and Target')
 plt.legend()
-plt.savefig('./fig/cos_1d_deep_net_both_init.png')
+plt.savefig('./fig/x3_1d_deep_net_both_init.png')
 
 # plot trained network
 fig2 = plt.figure(3)
@@ -176,5 +177,5 @@ ax2.plot(px.numpy(),p_unnet_trained_y.detach().numpy(),label='Xavier Initialized
 ax2.scatter(x.numpy(),ly,label='Training Data')
 ax2.set_title('Trained Networks')
 plt.legend()
-plt.savefig('./fig/cos_1d_deep_net_both_trained_net.png')
+plt.savefig('./fig/x3_1d_deep_net_both_trained_net.png')
 
