@@ -1,21 +1,54 @@
 """
-deepPoly.py
+File:
+    polynet.py
 
-Author: Joseph Daws Jr
-Last Modified: July 10, 2019
+Author(s): 
+    Joseph Daws Jr
+Last Modified: 
+    July 10, 2019
 
-DeepPolyNet is a class which can be initialized to 
-be a certain quadratic polynomial. 
+Description: 
+    + PolyNet: 
+      A class which can be initialized to 
+      be any polynomial. Requires a PolyClass
+      object in order to be instantiated
 
+    + PolyInfo: 
+      A class thats contain information need to define 
+      the polynomial associated with the network.
+      - dim      -- Dimension of tensor product
+      - polytype -- Orthonormal set of polynomials
+      - idxset   -- index set assocaited with exapansion
+                    in the given orthonomral system.
+      - roots    -- Roots associated with the polynomials
+                    used in the expansion
+      - coefs    -- Coefficients of these polynomials 
 """
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 from scipy.linalg import block_diag 
 
-class DeepPolyNet(nn.Module):
+# a default index set of dim=4
+# this is a total degree set of order 2
+defaultidx = np.array([[0 0 0 0],
+                       [0 0 0 1],
+                       [0 0 1 0],
+                       [0 1 0 0],
+                       [1 0 0 0],
+                       [0 0 0 2],
+                       [0 0 1 1],
+                       [0 1 0 1],
+                       [1 0 0 1],
+                       [0 0 2 0],
+                       [0 1 1 0],
+                       [1 0 1 0],
+                       [0 2 0 0],
+                       [1 1 0 0],
+                       [2 0 0 0]])
+
+class PolyNet(nn.Module):
     def __init__(self,L=6,q=1,n=1,a=-1,b=1):
         """
         L -- number of hidden layers
@@ -189,7 +222,7 @@ class DeepPolyNet(nn.Module):
 
     def xavier_init(self):
         """
-        initializes the linear layers.
+        initializes the linear layers using Xavier initialization.
         The weights are initialized using xavier random initialization.
         The biases use uniform initialization on the interval of approximation.
         """
@@ -198,5 +231,50 @@ class DeepPolyNet(nn.Module):
             for h in self.hidden:
                 torch.nn.init.xavier_uniform_(h.weight)
                 h.bias.uniform_(self.a,self.b)
+
+class PolyInfo:
+    """
+    Class for holding the info related to the polynomial
+    which generates the network
+    """
+    def __init__(self,dim = 4, polytype='leg',idxset=defaultidx):
+        """
+        Initializes the network:
+        dim      -- dimension of the input of the polynomial
+        polytype -- type of polynomial used in the tensor product basis
+        idxset   -- index set that determines the terms in the poly
+        rootvec  -- array of roots necessary to create first hidden 
+                    layer of network
+        card     -- cardinality of the index set, i.e., how many 
+                    terms in the polynomial
+        """
+        self.dim = dim
+        self.polytype = polytype
+        self.idxset = idxset
+        self.rootvec = self.get_roots
+        self.card = self.idxset.shape[0] 
+
+    def get_roots(self):
+        """
+        generates a vector of roots to be used to initializing the first
+        layers biases in the network based on the polytype and index set
+        we will need a double listing of roots.
+        """
+        if self.polytype == 'tay':
+            # all roots are zero
+            roots = np.zeros(2*self.card)
+
+        elif self.polytype == 'leg':
+            # loop over index set and find necessary polynomials
+            for i in self.idxset:
+                # loop over each polynomial in the 
+                # tensor product assocaited with i
+                for p in i:
+                    # 
+        return roots
+        
+
+
+
 
 

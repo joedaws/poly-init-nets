@@ -90,7 +90,7 @@ for epoch in range(eN,eN+eN2):
 
 p_trained_y = net(px)
 # save learned parameters of the network
-save_str = './data/cos_1d_deep_net.pt'
+save_str = './data/trainednets/cos_1d_deep_net.pt'
 torch.save(net.state_dict(),save_str)
 
 ############
@@ -142,7 +142,7 @@ for epoch in range(eN,eN+eN2):
 p_unnet_trained_y = unnet(px)
 
 # save learned parameters of the network
-save_str = './data/cos_1d_deep_unnet.pt'
+save_str = './data/trainednets/cos_1d_deep_unnet.pt'
 torch.save(unnet.state_dict(),save_str)
 
 ##########
